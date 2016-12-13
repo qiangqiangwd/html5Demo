@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        canvas {
+            border: 1px solid black;
+            margin: auto
+        }
+    </style>
+</head>
+<body>
+<canvas id="huabu" width="600" height="800"></canvas>
+<script type="text/javascript">
+    var num=0;
+    var zhuangt=true;
+    window.onload = function () {
+//        juxing();
+        setInterval(juxing, 35)
+    };
+    function juxing() {
+        var huabu = document.getElementById("huabu");
+        var context = huabu.getContext("2d");
+        context.clearRect(0,0,800,600);
+        context.shadowBlur=50;
+        context.shadowColor="red";
+        context.lineWidth=5;
+        context.fillStyle = "orange";
+        //矩形
+        context.fillRect(100, 0, 300, 400);
+        context.fillStyle = "white";
+        //圆形
+        context.arc(250, 150, 100, 0, 360 * Math.PI / 180, false);
+        context.fill();
+        context.save();//保存
+        context.translate(250, 150);//移动/圆心
+        for (var i = 0; i < 60; i++) {
+            context.beginPath();//开始路径
+            if (i % 5 == 0) {
+                //直线
+                context.moveTo(85, 0);//开始位置
+                context.lineTo(100, 0);//结束位置
+                context.strokeStyle = "blue";
+            } else {
+                context.moveTo(95, 0);//开始位置
+                context.lineTo(100, 0);//结束位置
+                context.strokeStyle = "black";
+            }
+            context.closePath();//结束路径
+            context.stroke();//开始画
+            context.rotate(6 * Math.PI / 180);//旋转6度
+        }
+        context.restore();//恢复
+        //圆形
+        context.beginPath();//开始路径
+        context.arc(250, 150, 3, 0, 360 * Math.PI / 180, false);//圆形
+        context.closePath();//结束路径
+        context.stroke();//开始画
+        //秒针
+        var date = new Date();
+        var miao = date.getSeconds();
+        context.save();
+        context.translate(250, 150);//移动
+        context.beginPath();//开始路径
+        context.lineWidth=2;
+        context.rotate(6*miao*Math.PI/180);//旋转
+        context.moveTo(0, 10);//开始位置
+        context.lineTo(0, -80);//结束位置
+
+        context.shadowBlur=50;
+        context.shadowColor="red";
+        context.strokeStyle = "red";
+        context.closePath();//结束路径
+        context.stroke();//开始画
+        context.restore();
+        //分针
+        var fen=date.getMinutes();
+        context.save();
+        context.translate(250, 150);//移动
+        context.beginPath();//开始路径
+        context.lineWidth=3;
+        context.rotate(6*fen*Math.PI/180+6*(miao/60)*Math.PI/180);//旋转
+        context.moveTo(0, 0);//开始位置
+        context.lineTo(0, -60);//结束位置
+        context.strokeStyle = "black";
+        context.closePath();//结束路径
+        context.stroke();//开始画
+        context.restore();
+
+        //时
+        var shi=date.getHours();
+        context.save();
+        context.translate(250, 150);//移动
+        context.beginPath();//开始路径
+        context.rotate(30*shi*Math.PI/180+30*(fen/60)*Math.PI/180+30*(miao/3600)*Math.PI/180);//旋转
+        context.moveTo(0, 10);//开始位置
+        context.lineTo(0, -40);//结束位置
+        context.strokeStyle = "black";
+        context.closePath();//结束路径
+        context.stroke();//开始画
+        context.restore();
+        //钟摆
+
+        //矩形
+        context.beginPath();//开始路径
+        context.fillRect(170, 300, 150, 100);
+        context.fillStyle = "white";
+        context.closePath();//结束路径
+       //圆形
+        context.save();
+        context.translate(250, 150);//移动
+        if(zhuangt){
+//            console.log(num)
+            context.rotate((-10+num)*Math.PI/180);
+            num+=2;
+            if(num>=35){
+                zhuangt=false;
+            }
+        }else{
+//            console.log(num)
+            context.rotate((-10+num)*Math.PI/180);
+            num-=2;
+            if(num<=-13){
+                zhuangt=true;
+            }
+        }
+        context.beginPath();//开始路径
+        context.arc(0,200, 20, 0, 360 * Math.PI / 180, false);//圆形
+        context.moveTo(0, 150);//开始位置
+        context.lineTo(0, 200);//结束位置
+        context.closePath();//结束路径
+        context.stroke();//开始画
+        context.restore();
+    }
+</script>
+</body>
+</html>
